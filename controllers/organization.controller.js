@@ -37,7 +37,21 @@ const AddOrganization = async(req, res) => {
 	}
 };
 
+const GetAllOrganizations = async(req, res) => {
+	try {
+		const organizations = await OrganizationService.Find();
+
+		return res.status(200).json({
+			message: "All Organizations!",
+			data: organizations, 
+		});
+	} catch (error) {
+		console.log('error: ', error);
+	}
+}
+
 
 module.exports = {
 	AddOrganization,
+	GetAllOrganizations,
 }
