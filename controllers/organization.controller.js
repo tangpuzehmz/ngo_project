@@ -50,8 +50,26 @@ const GetAllOrganizations = async(req, res) => {
 	}
 }
 
+const GetOrganizationById = async(req, res) => {
+	try {
+		const {_id} = req.params
+		const organization = await OrganizationService.FindOne({
+			_id,
+		});
+
+		return res.status(200).json({
+			message: "Specific Organization Fetched!",
+			data: organization, 
+		});
+	} catch (error) {
+		console.log('error: ', error);
+	}
+}
+
+
 
 module.exports = {
 	AddOrganization,
 	GetAllOrganizations,
+	GetOrganizationById,
 }
