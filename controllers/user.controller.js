@@ -84,9 +84,27 @@ const Register = async (req, res, next) => {
 	}
 };
 
+const GetUsersByType = async(req, res, next) => {
+	const{user_type} = req.params;
+
+	try {
+		const users	= await UserService.Find({
+			userType: user_type,
+		});
+
+		return res.status(200).json({
+			message: 'Ok',
+			data: users,
+		});
+	} catch (error) {
+		return	next(new Error(error.message));
+	}
+}
+
 
 module.exports = {
 	GetAllUsersList,
+	GetUsersByType,
 	GetUserById,
 	Register,
 }

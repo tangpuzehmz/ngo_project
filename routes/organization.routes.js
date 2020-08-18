@@ -6,7 +6,11 @@ router.post('/organization', OrganizationController.AddOrganization);
 router.get('/organizations', OrganizationController.GetAllOrganizations);
 router.get('/organization/:_id', OrganizationController.GetOrganizationById);
 router.put('/organization/:organization_id', OrganizationController.UpdateOrganization);
-router.delete('/organization/:_id', OrganizationController.DeleteOrganization);
+// router.delete('/organization/:_id', OrganizationController.DeleteOrganization);
+
+router.delete('/organization/:organization_id', OrganizationController.DestroyOrganization);
 
 module.exports = router;
+
+
 

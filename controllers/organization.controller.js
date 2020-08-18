@@ -57,10 +57,20 @@ const GetOrganizationById = async(req, res) => {
 			_id,
 		});
 
-		return res.status(200).json({
-			message: "Specific Organization Fetched!",
-			data: organization, 
-		});
+		if (!organization) {
+			
+			return res.status(404).json({
+				message: "Organization Not Found!",
+			})
+
+		} else {
+
+			return res.status(200).json({
+				message: "Organization Fetched!",
+				data: organization, 
+			});
+		}
+
 	} catch (error) {
 		console.log('error: ', error);
 	}
@@ -107,15 +117,47 @@ const UpdateOrganization = async(req, res) => {
 	}
 }
 
-const DeleteOrganization = async(req, res) => {
+// const DeleteOrganization = async(req, res) => {
+// 	try {
+// 		const {_id} = req.params;
+// 		const organization = await OrganizationService.DeleteOne({
+// 			_id,
+// 		});
+
+// 		if(!_id){
+// 			return res.status(404).json({
+// 				message: "Organization Not Found!"
+// 			})
+// 		}
+
+// 		return res.status(200).json({
+// 			message: "Organization Removed!!!",
+// 		});
+// 	} catch (error) {
+// 		console.log('error: ', error);
+// 	}
+// }
+
+const DestroyOrganization = async(req, res) => {
 	try {
-		const {_id} = req.params;
-		const organization = await OrganizationService.DeleteOne({
-			_id,
+		const {organization_id} = req.params
+
+		const organization = await OrganizationService.FindOne({
+			_id: organization_id,
+		});
+
+		if(!organization){
+			return res.status(404).json({
+				message: "Organization Not Found!"
+			})
+		}
+
+		await OrganizationService.DeleteOne({
+			_id: organization_id,
 		});
 
 		return res.status(200).json({
-			message: "Organization Deleted!",
+			message: "Organization Removed!",
 		});
 	} catch (error) {
 		console.log('error: ', error);
@@ -129,5 +171,8 @@ module.exports = {
 	GetAllOrganizations,
 	GetOrganizationById,
 	UpdateOrganization,
-	DeleteOrganization,
+	// DeleteOrganization,
+	DestroyOrganization,
 }
+
+
