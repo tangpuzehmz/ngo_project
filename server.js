@@ -14,9 +14,13 @@ app.get('/', (req, res) => {
 	res.send('Hello Ehmz!');
 });
 
-//routes
+// org routes
 const organization = require('./routes/organization.routes');
 app.use(organization);
+
+// user routes
+const user = require('./routes/user.routes');
+app.use(user);
 
 app.listen(port, () => {
 	console.log("server runs at port: ", port);
