@@ -12,8 +12,10 @@ router.get('/users/:user_type', UserController.GetUsersByType);
 router.get('/user/:user_id', UserController.GetUserById);
 router.put('/user/:user_id', UserController.UpdateUser);
 router.delete('/user/:user_id', UserController.DestroyUser);
+router.get('/user/:user_id', UserController.GetOrganizationsByUser);
 
 
 module.exports = router;
+
 
 

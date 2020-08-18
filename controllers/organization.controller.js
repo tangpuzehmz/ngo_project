@@ -8,6 +8,7 @@ const AddOrganization = async(req, res) => {
 			org_country,
 			org_city,
 			org_picture,
+			admins,
 		} = req.body
 
 		const existing_organization = await OrganizationService.FindOne({
@@ -26,6 +27,7 @@ const AddOrganization = async(req, res) => {
 			org_country,
 			org_city,
 			org_picture,
+			admins,
 		});
 
 		return res.status(200).json({
@@ -58,7 +60,7 @@ const GetOrganizationById = async(req, res) => {
 		});
 
 		if (organization) {
-			
+
 			return res.status(200).json({
 				message: "Organization Fetched!",
 				data: organization, 
@@ -86,6 +88,7 @@ const UpdateOrganization = async(req, res) => {
 			org_country,
 			org_city,
 			org_picture, 
+			admins,
 		} = req.body
 
 		const organization = await OrganizationService.FindOne({
@@ -102,7 +105,8 @@ const UpdateOrganization = async(req, res) => {
 				org_description,
 				org_country,
 				org_city,
-				org_picture, 
+				org_picture,
+				admins, 
 			});
 
 			return res.status(200).json({
@@ -172,6 +176,25 @@ const DestroyOrganization = async(req, res) => {
 }
 
 
+const GetAdminsByOrganization = async (req, res, next) => {
+	const { organization_id } = req.params;
+	try {
+		const admins = await OrganizationService.FindOneAndPopulate(
+			{ _id: organization_id },
+			'admins'
+		);
+
+		return res.status(200).json({
+			message: 'Ok',
+			data: admins,
+		});
+
+	} catch (error) {
+		return next(new Error(error.message));
+	}
+};
+
+
 
 module.exports = {
 	AddOrganization,
@@ -180,5 +203,6 @@ module.exports = {
 	UpdateOrganization,
 	// DeleteOrganization,
 	DestroyOrganization,
+	GetAdminsByOrganization,
 }
 

@@ -185,6 +185,26 @@ const DestroyUser = async(req, res) => {
 }
 
 
+const GetOrganizationsByUser = async (req, res, next) => {
+	const { user_id } = req.params;
+	try {
+		const admins = await UserService.FindOneAndPopulate(
+			{ _id: user_id },
+			'organizations'
+		);
+
+		return res.status(200).json({
+			message: 'Ok',
+			data: organizations,
+		});
+
+	} catch (error) {
+		return next(new Error(error.message));
+	}
+};
+
+
+
 module.exports = {
 	GetAllUsersList,
 	GetUsersByType,
@@ -192,4 +212,6 @@ module.exports = {
 	Register,
 	UpdateUser,
 	DestroyUser,
+	GetOrganizationsByUser,
 }
+

@@ -43,3 +43,4 @@ UserSchema.pre('findOneAndUpdate', async function () {
 const User = mongoose.model('user', UserSchema, 'user');
 
 module.exports = User;
+
