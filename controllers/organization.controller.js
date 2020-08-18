@@ -7,7 +7,7 @@ const AddOrganization = async(req, res) => {
 			org_description,
 			org_country,
 			org_city,
-			org_picture, 
+			org_picture,
 		} = req.body
 
 		const existing_organization = await OrganizationService.FindOne({
@@ -57,17 +57,17 @@ const GetOrganizationById = async(req, res) => {
 			_id,
 		});
 
-		if (!organization) {
+		if (organization) {
 			
-			return res.status(404).json({
-				message: "Organization Not Found!",
-			})
-
-		} else {
-
 			return res.status(200).json({
 				message: "Organization Fetched!",
 				data: organization, 
+			});
+
+		} else {
+
+			return res.status(404).json({
+				message: "Organization Not Found!",
 			});
 		}
 
@@ -92,26 +92,29 @@ const UpdateOrganization = async(req, res) => {
 			_id: organization_id,
 		});
 
-		if(!organization){
+		if(organization){
+
+			await OrganizationService.FindOneAndUpdate({
+				_id: organization_id,
+			},
+			{
+				org_name,
+				org_description,
+				org_country,
+				org_city,
+				org_picture, 
+			});
+
+			return res.status(200).json({
+				message: "Organization Updated!",
+			});
+
+		} else {
+
 			return res.status(404).json({
 				message: "Organization Not Found!"
-			})
+			});
 		}
-
-		await OrganizationService.FindOneAndUpdate({
-			_id: organization_id,
-		},
-		{
-			org_name,
-			org_description,
-			org_country,
-			org_city,
-			org_picture, 
-		});
-
-		return res.status(200).json({
-			message: "Organization Updated!",
-		});
 	} catch (error) {
 		console.log('error: ', error);
 	}
@@ -146,19 +149,23 @@ const DestroyOrganization = async(req, res) => {
 			_id: organization_id,
 		});
 
-		if(!organization){
+		if(organization){
+			
+			await OrganizationService.DeleteOne({
+				_id: organization_id,
+			});
+
+			return res.status(200).json({
+				message: "Organization Removed!",
+			});
+
+		} else {
+
 			return res.status(404).json({
 				message: "Organization Not Found!"
 			})
 		}
 
-		await OrganizationService.DeleteOne({
-			_id: organization_id,
-		});
-
-		return res.status(200).json({
-			message: "Organization Removed!",
-		});
 	} catch (error) {
 		console.log('error: ', error);
 	}
@@ -174,5 +181,4 @@ module.exports = {
 	// DeleteOrganization,
 	DestroyOrganization,
 }
-
 

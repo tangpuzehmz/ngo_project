@@ -6,6 +6,9 @@ const OrganizationSchema = new mongoose.Schema({
 	org_country: String,
 	org_city: String,
 	org_picture: String,
+},
+{
+	versionKey: false,
 });
 
 
