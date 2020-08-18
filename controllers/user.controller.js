@@ -188,7 +188,7 @@ const DestroyUser = async(req, res) => {
 const GetOrganizationsByUser = async (req, res, next) => {
 	const { user_id } = req.params;
 	try {
-		const admins = await UserService.FindOneAndPopulate(
+		const organizations = await UserService.FindOneAndPopulate(
 			{ _id: user_id },
 			'organizations'
 		);
