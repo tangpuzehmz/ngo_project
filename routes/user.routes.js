@@ -14,6 +14,9 @@ router.put('/user/:user_id', UserController.UpdateUser);
 router.delete('/user/:user_id', UserController.DestroyUser);
 router.get('/user/:user_id/organizations', UserController.GetOrganizationsByUser);
 
+router.post('/user/login', UserController.Login);
+
+
 
 module.exports = router;
 
