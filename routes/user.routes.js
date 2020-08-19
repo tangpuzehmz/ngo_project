@@ -15,7 +15,7 @@ router.delete('/user/:user_id', UserController.DestroyUser);
 router.get('/user/:user_id/organizations', UserController.GetOrganizationsByUser);
 
 router.post('/user/login', UserController.Login);
-
+router.post('/user/logout', UserController.Logout);
 
 
 module.exports = router;

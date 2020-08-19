@@ -219,6 +219,7 @@ const Login = async(req, res) => {
 		}
 
 		const valid = user.password && (await bcrypt.compare(password, user.password));
+		
 		if(!valid) {
 
 			return res.status(400).json({
@@ -244,6 +245,23 @@ const Login = async(req, res) => {
 }
 
 
+const Logout = async(req, res, next) => {
+	try {
+		const authorization = req.headers['x-access-token'] || req.headers.authorization;
+		const token = authorization && authorization.startsWith('Bearer') && authorization.slice(7, authorization.length);
+
+		// will delete the token from the database and will be invalid
+		await Promise.all([TokenService.DeleteOne({ access_token: token })]);
+
+		return res.status(200).json({ message: 'User Logout!' });
+
+	} catch (error) {
+
+		return next(new Error(error.message));
+	}
+};
+
+
 module.exports = {
 	GetAllUsersList,
 	GetUsersByType,
@@ -253,5 +271,5 @@ module.exports = {
 	DestroyUser,
 	GetOrganizationsByUser,
 	Login,
+	Logout,
 }
-
