@@ -4,10 +4,6 @@ const router = express.Router();
 const { isAuthenticated } = require('../utils/middleware')
 
 
-// GetUsersByType
-// GetUserById
-// Register
-
 router.post('/user/login', UserController.Login);
 router.post('/user/logout', UserController.Logout);
 
@@ -23,4 +19,3 @@ router.get('/user/:user_id/organizations', UserController.GetOrganizationsByUser
 
 
 module.exports = router;
-

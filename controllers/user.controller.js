@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const TokenService = require('../services/token.services');
 const jwt = require('jsonwebtoken');
 
+
 const GetAllUsersList = async (req, res, next) => {
 	try {
 		const users = await UserService.Find({});
@@ -18,11 +19,9 @@ const GetAllUsersList = async (req, res, next) => {
 
 
 const GetUserById = async(req, res, next) => {
-	const{user_type} = req.params;
-
 	try {
 		const{user_id} = req.params;
-		const user	= await UserService.FindOne({
+		const user = await UserService.FindOne({
 			_id: user_id,
 		});
 
@@ -37,6 +36,32 @@ const GetUserById = async(req, res, next) => {
 			message: 'Ok',
 			data: user,
 		});
+	} catch (error) {
+		return	next(new Error(error.message));
+	}
+}
+
+const GetUsersByType = async(req, res, next) => {
+
+	try {
+		const{user_type} = req.params;
+		const users = await UserService.Find({
+			userType: user_type,
+		});
+
+		if (!users) {
+			return res.status(404).json({
+				message: 'User Type Not Found!'
+			});
+
+		} else {
+			return res.status(200).json({
+			message: 'Ok',
+			data: users,
+			});
+
+		}
+
 	} catch (error) {
 		return	next(new Error(error.message));
 	}
@@ -88,24 +113,6 @@ const Register = async (req, res, next) => {
 };
 
 
-const GetUsersByType = async(req, res, next) => {
-	const{user_type} = req.params;
-
-	try {
-		const users	= await UserService.Find({
-			userType: user_type,
-		});
-
-		return res.status(200).json({
-			message: 'Ok',
-			data: users,
-		});
-	} catch (error) {
-		return	next(new Error(error.message));
-	}
-}
-
-
 const UpdateUser = async (req, res, next) => {
 	try {
 		const { user_id } = req.params;
@@ -124,6 +131,7 @@ const UpdateUser = async (req, res, next) => {
 			_id: user_id,
 		});
 		console.log('user: ', user);
+		
 		if (user) {
 
 			await UserService.FindOneAndUpdate({ _id: user_id 

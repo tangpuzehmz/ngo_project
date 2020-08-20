@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 
+
 const Create = async(data) => {
 	try{
 		const user = await User.create(data);
@@ -10,9 +11,9 @@ const Create = async(data) => {
 	}
 }
 
-const Find = async(data) => {
+const Find = async(query) => {
 	try{
-		const user = await User.find({});
+		const user = await User.find(query);
 		return user;
 
 	} catch (error) {
