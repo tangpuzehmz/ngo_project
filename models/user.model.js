@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+
 const UserSchema = new mongoose.Schema({
 		username: String,
 		name: String,
@@ -36,9 +37,12 @@ UserSchema.pre('save', async function (next) {
 	next();
 });
 
-UserSchema.pre('findOneAndUpdate', async function () {
-	this.update({}, { $set: { updatedAt: new Date() } });
+
+UserSchema.pre('findOneAndUpdate', async function (next) {
+  this._update.password = await bcrypt.hash(this._update.password, 12)
+  next();
 });
+
 
 const User = mongoose.model('user', UserSchema, 'user');
 
